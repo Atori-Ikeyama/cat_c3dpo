@@ -1,7 +1,7 @@
 torch==1.1.0
-numpy
+numpy==1.17.0
 tqdm
 matplotlib
 visdom
-pyyaml
+pyyaml==5.1.2
 tabulate

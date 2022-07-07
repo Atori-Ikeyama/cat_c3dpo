@@ -28,41 +28,43 @@ def run_demo():
     model.eval()
 
     preds = model(**net_input)
-
-    # input keypoints
-    kp_loc = net_input['kp_loc'][0]
-
-    # predicted 3d keypoints in camera coords
     kp_pred_3d = preds['shape_image_coord'][0]
+    print(f'preds: {kp_pred_3d}')
 
-    sticks = STICKS['h36m']
+    # # input keypoints
+    # kp_loc = net_input['kp_loc'][0]
 
-    # viz = get_visdom_connection()
-    im_proj = show_projections(
-        kp_loc[None].detach().cpu().numpy(),
-        visdom_env='demo_h36m',
-        visdom_win='input_keypoints',
-        title='input_keypoints',
-        cmap__='rainbow',
-        markersize=40,
-        sticks=sticks,
-        stickwidth=2,
-    )
+    # # predicted 3d keypoints in camera coords
+    # kp_pred_3d = preds['shape_image_coord'][0]
 
-    im_proj = Image.fromarray(im_proj)
-    im_proj_path = os.path.join(model_dir, 'demo_projections.png')
-    print('Saving input keypoints to %s' % im_proj_path)
-    im_proj.save(im_proj_path)
+    # sticks = STICKS['h36m']
 
-    video_path = os.path.join(model_dir, 'demo_shape.mp4')
-    rotating_3d_video(kp_pred_3d.detach().cpu(),
-                      video_path=video_path,
-                      sticks=sticks,
-                      title='rotating 3d',
-                      cmap='rainbow',
-                      visdom_env='demo_h36m',
-                      visdom_win='3d_shape',
-                      get_frames=7, )
+    # # viz = get_visdom_connection()
+    # im_proj = show_projections(
+    #     kp_loc[None].detach().cpu().numpy(),
+    #     visdom_env='demo_h36m',
+    #     visdom_win='input_keypoints',
+    #     title='input_keypoints',
+    #     cmap__='rainbow',
+    #     markersize=40,
+    #     sticks=sticks,
+    #     stickwidth=2,
+    # )
+
+    # im_proj = Image.fromarray(im_proj)
+    # im_proj_path = os.path.join(model_dir, 'demo_projections.png')
+    # print('Saving input keypoints to %s' % im_proj_path)
+    # im_proj.save(im_proj_path)
+
+    # video_path = os.path.join(model_dir, 'demo_shape.mp4')
+    # rotating_3d_video(kp_pred_3d.detach().cpu(),
+    #                   video_path=video_path,
+    #                   sticks=sticks,
+    #                   title='rotating 3d',
+    #                   cmap='rainbow',
+    #                   visdom_env='demo_h36m',
+    #                   visdom_win='3d_shape',
+    #                   get_frames=7, )
 
 
 def get_test_h36m_sample():

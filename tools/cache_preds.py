@@ -5,7 +5,10 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 """
 
-from torch._six import container_abcs, string_classes, int_classes
+# from torch._six import container_abcs, string_classes, int_classes
+from torch._six import string_classes
+import collections.abc as container_abcs
+int_classes = int
 import re
 import time
 import sys

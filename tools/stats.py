@@ -339,7 +339,7 @@ class Stats(object):
                 plt.minorticks_on()
 
             plt.tight_layout()
-            plt.show()
+            # plt.show()
             fig.savefig(plot_file)
 
     def synchronize_logged_vars(self, log_vars, default_val=float('NaN')):

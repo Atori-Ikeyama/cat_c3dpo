@@ -22,7 +22,7 @@ import torch
 
 class C3DPO(torch.nn.Module):
 
-    def __init__(self, n_keypoints=17,
+    def __init__(self, n_keypoints=20,
                  shape_basis_size=10,
                  n_fully_connected=1024,
                  n_layers=6,

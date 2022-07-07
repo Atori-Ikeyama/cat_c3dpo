@@ -15,6 +15,7 @@ import torch
 
 from dataset.dataset_zoo import dataset_zoo
 from dataset.eval_zoo import eval_zoo
+from dataset.keypoints_dataset import KeypointsDataset
 from model import C3DPO
 
 from config import set_config_from_file, set_config, \
@@ -27,24 +28,6 @@ from tools.vis_utils import get_visdom_env
 from tools.model_io import find_last_checkpoint, purge_epoch, \
     load_model, get_checkpoint, save_model
 from tools.cache_preds import cache_preds
-
-
-def init_model_from_dir(exp_dir):
-    cfg_file = os.path.join(exp_dir, 'expconfig.yaml')
-    if not os.path.isfile(cfg_file):
-        print('no config %s!' % cfg_file)
-        return None
-    exp = ExperimentConfig(cfg_file=cfg_file)
-    exp.cfg.exp_dir = exp_dir  # !
-    cfg = exp.cfg
-
-    # init the model
-    model, _, _ = init_model(cfg, force_load=True, clear_stats=True)
-    if torch.cuda.is_available():
-        model.cuda()
-    model.eval()
-
-    return model, cfg
 
 
 def init_model(cfg, force_load=False, clear_stats=False, add_log_vars=None):
@@ -185,8 +168,9 @@ def run_training(cfg):
     dump_config(cfg)
 
     # setup datasets
-    dset_train, dset_val, dset_test = dataset_zoo(**cfg.DATASET)
+    dset_train = KeypointsDataset(jsonfile='./data/2D_data/merge_cat_train.json', train=True)
 
+    dset_val, dset_test = [None, None]
     # init loaders
     trainloader = torch.utils.data.DataLoader(dset_train,
                                               num_workers=cfg.num_workers,
@@ -299,7 +283,6 @@ def trainvalidate(model,
     visdom_env_imgs = visdom_env_root + "_images_" + trainmode
 
     n_batches = len(loader)
-    print('n batches: ', n_batches)
     for it, batch in enumerate(loader):
 
         last_iter = it == n_batches-1
@@ -390,19 +373,6 @@ class ExperimentConfig(object):
         else:
             auto_init_args(self, tgt='cfg', can_overwrite=True)
         self.cfg = nested_attr_dict(self.cfg)
-
-
-def run_experiment_from_cfg_file(cfg_file):
-
-    if not os.path.isfile(cfg_file):
-        print('no config %s!' % cfg_file)
-        return None
-
-    exp = ExperimentConfig(cfg_file=cfg_file)
-
-    results = run_training(exp.cfg)
-
-    return results
 
 
 if __name__ == '__main__':

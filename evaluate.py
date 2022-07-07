@@ -17,7 +17,7 @@ from tabulate import tabulate
 
 def eval_model(dataset_name):
 
-    model_dir = download_model(dataset_name, force_download=False)
+    model_dir = download_model(dataset_name, force_download=True)
 
     model, _ = init_model_from_dir(model_dir)
     model.eval()
@@ -42,8 +42,10 @@ if __name__ == '__main__':
 
     results = {}
 
-    for dataset in ('h36m', 'h36m_hourglass', 'pascal3d_hrnet',
-                    'pascal3d', 'up3d_79kp'):
+    # , 'h36m_hourglass', 'pascal3d_hrnet',
+    #                 'pascal3d', 'up3d_79kp'
+
+    for dataset in ['h36m']:
         results[dataset] = eval_model(dataset)
 
     print('\n\nRESULTS:')

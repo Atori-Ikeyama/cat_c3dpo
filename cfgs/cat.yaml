@@ -14,9 +14,9 @@ dictitems:
         dictitems:
           limit_to: -1
           rand_sample: -1
-      dataset_name: h36m
+      dataset_name: cat
       force_download: false
-      sets_to_load: !!python/tuple
+      sets_to_load: !!python/tuple # たぶん関係ない
       - train
       - val
   MODEL: !!python/object/new:tools.attr_dict.AttrDict
@@ -32,7 +32,7 @@ dictitems:
           n_rand_samples: 4
           rot_angle: 3.141592653589793
           use: true
-      connectivity_setup: h36m
+      connectivity_setup: cat
       depth_offset: 0.0
       huber_scaling: 0.01
       independent_phi_for_aug: true
@@ -48,7 +48,7 @@ dictitems:
           l_canonicalization: 1.0
           l_reprojection: 1.0
       n_fully_connected: 1024
-      n_keypoints: 17
+      n_keypoints: 20 # number of keypoints
       n_layers: 6
       perspective_depth_threshold: 0.1
       projection_type: orthographic
@@ -72,27 +72,27 @@ dictitems:
       gamma: 0.1
       lr: 0.001
       lr_policy: multistep
-      max_epochs: 90
+      max_epochs: 90 # 練習用で２、本番は90
       milestones:
       - 60
       - 80
       momentum: 0.9
       weight_decay: 0.0005
-  batch_size: 1024
+  batch_size: 1024 # デフォルトは1024
   cfg_file: null
-  exp_dir: ./data/exps/c3dpo/h36m
+  exp_dir: ./data/exps/c3dpo/cat
   exp_idx: 0
-  exp_name: h36m
+  exp_name: cat
   gpu_idx: 0
   metric_print_interval: 5
   model_zoo: ./data/torch_zoo/
   num_workers: 8
-  resume: false
+  resume: true
   resume_epoch: -1
   seed: 0
   store_checkpoints: true
   store_checkpoints_purge: 3
-  visdom_env: h36m
+  visdom_env: cat
   visdom_port: 8097
   visdom_server: http://localhost
   visualize_interval: 300
